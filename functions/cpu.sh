@@ -3,10 +3,11 @@ cpu_in_alarm=0
 cpu_peak_count=0
 
 cpu_check(){
+	dt=$(date)
 	cpu_overall_load=$(uptime | awk '{ print $(NF-2) }' | tr -d ',' | tr -d '.')
 	#cpu_load_percentage=$(($cpu_overall_load/$number_cpu_cores))
 	cpu_load_percentage=$(echo "$cpu_overall_load/$number_cpu_cores" | bc) # Second method for calculating
-	echo $cpu_load_percentage
+	echo "$date | Current cpu load is: $cpu_load_percentage"
 	if [[ $cpu_load_percentage -ge ${CPU_LIMIT} && ${cpu_in_alarm} -eq 0 ]]; then
 		cpu_peak_count=$(($cpu_peak_count+1))
 		if [[ $cpu_peak_count -ge $CPU_LIMIT_PEAK_COUNT ]]; then
